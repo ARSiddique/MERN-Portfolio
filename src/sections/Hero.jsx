@@ -18,7 +18,7 @@ export default function Hero() {
             Hi, I'm Abdul Rauf
           </h1>
           <p className="text-gray-300 text-lg mb-6">
-            A passionate <span className="text-white font-semibold">MERN Stack Developer</span> creating high-performance web applications using React, Node.js, Express & MongoDB.
+            A passionate <span className="text-white font-semibold">MERN Stack Developer</span> crafting full-stack apps using <span className="text-cyan-300 font-semibold">React</span>, <span className="text-cyan-300 font-semibold">Node.js</span>, <span className="text-cyan-300 font-semibold">Express</span>, and <span className="text-cyan-300 font-semibold">MongoDB</span>. I focus on performance, UX, and clean code.
           </p>
           <Link
             to="projects"
@@ -31,7 +31,7 @@ export default function Hero() {
           </Link>
         </motion.div>
 
-        {/* Right: Lottie Player via CDN */}
+        {/* Right: High-quality Lottie Animation */}
         <motion.div
           className="flex-1 w-full max-w-md"
           initial={{ scale: 0.8, opacity: 0 }}
@@ -39,7 +39,7 @@ export default function Hero() {
           transition={{ delay: 0.3, duration: 0.7 }}
         >
           <lottie-player
-            src="https://assets4.lottiefiles.com/packages/lf20_kkflmtur.json"
+            src="https://assets7.lottiefiles.com/packages/lf20_pwohahvd.json"
             background="transparent"
             speed="1"
             loop
