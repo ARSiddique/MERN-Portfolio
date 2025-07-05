@@ -1,6 +1,7 @@
 // src/sections/Hero.jsx
 import { motion } from 'framer-motion';
 import { Link } from 'react-scroll';
+import { FaLaptopCode, FaEnvelopeOpenText } from 'react-icons/fa';
 
 export default function Hero() {
   return (
@@ -14,24 +15,50 @@ export default function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
-          <h1 className="text-4xl md:text-5xl font-bold mb-4 leading-tight text-cyan-400">
-            Hi, I'm Abdul Rauf
+          <span className="text-sm uppercase text-cyan-400 tracking-wider">
+            MERN Stack Developer
+          </span>
+
+          <h1 className="text-4xl md:text-5xl font-extrabold mb-3 leading-tight text-white mt-2">
+            Turning Ideas into Interactive Web Experiences
           </h1>
-          <p className="text-gray-300 text-lg mb-6">
-            A passionate <span className="text-white font-semibold">MERN Stack Developer</span> crafting full-stack apps using <span className="text-cyan-300 font-semibold">React</span>, <span className="text-cyan-300 font-semibold">Node.js</span>, <span className="text-cyan-300 font-semibold">Express</span>, and <span className="text-cyan-300 font-semibold">MongoDB</span>. I focus on performance, UX, and clean code.
+
+          <span className="block text-xl text-cyan-300 font-semibold tracking-wide mb-4">
+            I'm Abdul Rauf
+          </span>
+
+          <p className="text-gray-300 text-lg mb-6 max-w-xl mx-auto md:mx-0">
+            I build high-performance, full-stack web apps using
+            <span className="text-cyan-300 font-semibold"> React</span>,
+            <span className="text-cyan-300 font-semibold"> Node.js</span>,
+            <span className="text-cyan-300 font-semibold"> Express</span>, and
+            <span className="text-cyan-300 font-semibold"> MongoDB</span>. Focused on clean code, UI/UX, and seamless user experience.
           </p>
-          <Link
-            to="projects"
-            smooth={true}
-            duration={500}
-            offset={-70}
-            className="inline-block bg-cyan-500 px-6 py-2 text-white font-semibold rounded hover:bg-cyan-600 transition cursor-pointer"
-          >
-            View Projects
-          </Link>
+
+          {/* CTA Buttons */}
+          <div className="flex justify-center md:justify-start gap-4">
+            <Link
+              to="projects"
+              smooth={true}
+              duration={500}
+              offset={-70}
+              className="inline-flex items-center gap-2 bg-cyan-500 text-white px-6 py-2 rounded font-semibold hover:bg-cyan-600 transition cursor-pointer"
+            >
+              <FaLaptopCode className="text-lg" /> View Projects
+            </Link>
+            <Link
+              to="contact"
+              smooth={true}
+              duration={500}
+              offset={-70}
+              className="inline-flex items-center gap-2 border border-cyan-500 text-cyan-400 px-6 py-2 rounded font-semibold hover:bg-cyan-600 hover:text-white transition cursor-pointer"
+            >
+              <FaEnvelopeOpenText className="text-lg" /> Hire Me
+            </Link>
+          </div>
         </motion.div>
 
-        {/* Right: High-quality Lottie Animation */}
+        {/* Right: Lottie Animation */}
         <motion.div
           className="flex-1 w-full max-w-md"
           initial={{ scale: 0.8, opacity: 0 }}
@@ -39,7 +66,8 @@ export default function Hero() {
           transition={{ delay: 0.3, duration: 0.7 }}
         >
           <lottie-player
-            src="https://assets7.lottiefiles.com/packages/lf20_pwohahvd.json"
+            // src="https://assets3.lottiefiles.com/packages/lf20_9cyyl8i5.json"
+            src="https://assets4.lottiefiles.com/packages/lf20_kkflmtur.json"
             background="transparent"
             speed="1"
             loop
