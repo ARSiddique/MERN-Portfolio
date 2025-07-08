@@ -15,7 +15,7 @@ export default function Contact() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        // 💡 Later connect this to backend email service
+        // 📨 TODO: connect to backend or service like EmailJS / Nodemailer
         console.log('Form Data:', formData);
         alert('Message Sent! (Functionality coming soon)');
     };
@@ -36,7 +36,7 @@ export default function Contact() {
                 </motion.h2>
 
                 <motion.p
-                    className="text-gray-300 mb-8"
+                    className="text-gray-300 mb-10"
                     initial={{ opacity: 0 }}
                     whileInView={{ opacity: 1 }}
                     transition={{ delay: 0.2, duration: 0.6 }}
@@ -52,47 +52,61 @@ export default function Contact() {
                     transition={{ delay: 0.4, duration: 0.8 }}
                 >
                     <div>
-                        <label className="block mb-1 text-sm">Name</label>
+                        <label htmlFor="name" className="block mb-1 text-sm text-gray-300">
+                            Name
+                        </label>
                         <input
+                            id="name"
                             type="text"
                             name="name"
+                            placeholder="Your full name"
                             required
                             value={formData.name}
                             onChange={handleChange}
-                            className="w-full bg-[#1e293b] border border-gray-600 rounded p-3 text-white outline-none focus:ring-2 focus:ring-cyan-500"
+                            className="w-full bg-[#1e293b] border border-gray-600 rounded-lg p-3 text-white outline-none focus:ring-2 focus:ring-cyan-500"
                         />
                     </div>
 
                     <div>
-                        <label className="block mb-1 text-sm">Email</label>
+                        <label htmlFor="email" className="block mb-1 text-sm text-gray-300">
+                            Email
+                        </label>
                         <input
+                            id="email"
                             type="email"
                             name="email"
+                            placeholder="you@example.com"
                             required
                             value={formData.email}
                             onChange={handleChange}
-                            className="w-full bg-[#1e293b] border border-gray-600 rounded p-3 text-white outline-none focus:ring-2 focus:ring-cyan-500"
+                            className="w-full bg-[#1e293b] border border-gray-600 rounded-lg p-3 text-white outline-none focus:ring-2 focus:ring-cyan-500"
                         />
                     </div>
 
                     <div>
-                        <label className="block mb-1 text-sm">Message</label>
+                        <label htmlFor="message" className="block mb-1 text-sm text-gray-300">
+                            Message
+                        </label>
                         <textarea
+                            id="message"
                             name="message"
                             rows="5"
+                            placeholder="Write your message here..."
                             required
                             value={formData.message}
                             onChange={handleChange}
-                            className="w-full bg-[#1e293b] border border-gray-600 rounded p-3 text-white outline-none focus:ring-2 focus:ring-cyan-500"
+                            className="w-full bg-[#1e293b] border border-gray-600 rounded-lg p-3 text-white outline-none focus:ring-2 focus:ring-cyan-500"
                         />
                     </div>
 
-                    <button
+                    <motion.button
                         type="submit"
-                        className="inline-flex items-center gap-2 bg-cyan-500 hover:bg-cyan-600 px-6 py-3 rounded text-white font-semibold transition"
+                        whileTap={{ scale: 0.95 }}
+                        className="inline-flex items-center gap-2 bg-cyan-500 hover:bg-cyan-600 px-6 py-3 rounded-lg text-white font-semibold transition"
                     >
-                        <FaPaperPlane /> Send Message
-                    </button>
+                        <FaPaperPlane />
+                        Send Message
+                    </motion.button>
                 </motion.form>
             </div>
         </section>

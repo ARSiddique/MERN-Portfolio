@@ -3,25 +3,25 @@ import { motion } from 'framer-motion';
 
 const experiences = [
     {
+        role: "Freelance MERN Stack Developer",
+        company: "Remote / Self-employed",
+        duration: "Jul 2025 – Present",
+        description:
+        "Currently working as a freelance developer, delivering full-stack web apps with admin panels, dashboards, and API integrations using modern MERN stack and ShadCN UI.",
+    },
+    {
         role: "MERN Stack Developer",
-        company: "Freelance / Personal Projects",
-        duration: "Dec 2024 – Present",
+        company: "Heapware Technologies",
+        duration: "Dec 10, 2024 – Jun 10, 2025",
         description:
-            "Building full-stack apps with authentication, dashboards, REST APIs, and beautiful UIs using MERN, Tailwind, Redux, and ShadCN UI.",
+        "Developed full-stack projects with secure authentication, dashboards, protected routes, and reusable components using Next.js, Node, Express, MongoDB, Tailwind, and Redux Toolkit.",
     },
     {
-        role: "Game Developer",
-        company: "Game Pixel Studio / Ozi Technologies",
-        duration: "Dec 2021 – Nov 2023",
+        role: "MERN Stack Developer (Intern)",
+        company: "ASHWIZ",
+        duration: "Aug 10, 2024 – Nov 10, 2024",
         description:
-            "Developed simulation games in Unity for Android using C#. Led gameplay design and optimization for performance on low-end devices.",
-    },
-    {
-        role: "WordPress Developer (Intern)",
-        company: "Pagie Portal",
-        duration: "Sep 2021 – Dec 2021",
-        description:
-            "Worked on custom themes and elementor-based websites for European construction clients. Built responsive and SEO-optimized layouts.",
+            "Worked as a MERN stack intern where I built small-scale apps, implemented CRUD operations, and practiced real-world workflows using Git, REST APIs, and MVC structure.",
     },
 ];
 
