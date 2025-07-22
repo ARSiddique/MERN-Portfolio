@@ -2,6 +2,9 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { FaPaperPlane } from 'react-icons/fa';
 
+// Base URL from environment (Vite)
+const API_BASE = import.meta.env.VITE_API_BASE_URL || '/api';
+
 export default function Contact() {
     const [formData, setFormData] = useState({ name: '', email: '', message: '' });
     const [status, setStatus] = useState({ submitting: false, success: '', error: '' });
@@ -13,13 +16,19 @@ export default function Contact() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setStatus({ submitting: true, success: '', error: '' });
+
         try {
-            const res = await fetch('/api/contact', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(formData),
-            });
+            const res = await fetch(
+                `${API_BASE}/contact`,
+                {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData),
+                }
+            );
+
             if (!res.ok) throw new Error('Network response was not ok');
+
             setStatus({ submitting: false, success: 'Your message has been sent!', error: '' });
             setFormData({ name: '', email: '', message: '' });
         } catch (err) {

@@ -1,5 +1,8 @@
 import { Link as ScrollLink } from 'react-scroll';
 import { FaGithub, FaLinkedin, FaEnvelope, FaWhatsapp, FaChevronUp } from 'react-icons/fa';
+const WHATSAPP_NUMBER = import.meta.env.VITE_WHATSAPP_NUMBER;
+const GITHUB_URL = import.meta.env.VITE_GITHUB_URL
+const LINKEDIN_URL = import.meta.env.VITE_LINKEDIN_URL
 
 export default function Footer() {
     return (
@@ -13,7 +16,7 @@ export default function Footer() {
                     {/* Right: Social Links */}
                     <div className="flex gap-6 text-xl justify-center md:justify-end">
                         <a
-                            href="https://github.com/yourgithub"
+                            href={GITHUB_URL}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="hover:text-gray-900 dark:hover:text-white transition focus:outline-none focus:ring-2 focus:ring-cyan-500 rounded"
@@ -22,7 +25,7 @@ export default function Footer() {
                             <FaGithub aria-hidden="true" />
                         </a>
                         <a
-                            href="https://www.linkedin.com/in/yourlinkedin"
+                            href={LINKEDIN_URL}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="hover:text-gray-900 dark:hover:text-white transition focus:outline-none focus:ring-2 focus:ring-cyan-500 rounded"
@@ -47,7 +50,7 @@ export default function Footer() {
                     <FaEnvelope size={20} aria-hidden="true" />
                 </ScrollLink>
                 <a
-                    href="https://wa.me/923001234567"
+                    href={`https://wa.me/${WHATSAPP_NUMBER}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label="Chat on WhatsApp"
