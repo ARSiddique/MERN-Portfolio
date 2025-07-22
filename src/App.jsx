@@ -13,7 +13,7 @@ import Contact from './sections/Contact';
 
 export default function App() {
   return (
-    <div className="bg-[#0f172a] text-white scroll-smooth font-sans">
+    <div className="bg-white dark:bg-slate-900 scroll-smooth font-sans transition-colors">
       <Navbar />
       <main className="pt-20">
         <Hero />

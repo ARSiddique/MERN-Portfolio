@@ -1,4 +1,3 @@
-// src/sections/Skills.jsx
 import { motion } from 'framer-motion';
 import {
     FaReact,
@@ -14,21 +13,22 @@ import {
     SiTailwindcss,
 } from 'react-icons/si';
 
-const skills = [
-    { name: 'React', icon: <FaReact className="text-sky-400" /> },
-    { name: 'Next.js', icon: <SiNextdotjs className="text-white" /> },
-    { name: 'Node.js', icon: <FaNodeJs className="text-green-500" /> },
-    { name: 'Express.js', icon: <SiExpress className="text-gray-300" /> },
-    { name: 'MongoDB', icon: <SiMongodb className="text-green-400" /> },
-    { name: 'JavaScript', icon: <SiJavascript className="text-yellow-400" /> },
-    { name: 'Tailwind CSS', icon: <SiTailwindcss className="text-cyan-400" /> },
+const SKILLS = [
+    { name: 'React', icon: <FaReact className="text-cyan-600 dark:text-cyan-400" aria-hidden="true" /> },
+    { name: 'Next.js', icon: <SiNextdotjs className="text-gray-800 dark:text-gray-200" aria-hidden="true" /> },
+    { name: 'Node.js', icon: <FaNodeJs className="text-green-600 dark:text-green-400" aria-hidden="true" /> },
+    { name: 'Express.js', icon: <SiExpress className="text-gray-600 dark:text-gray-400" aria-hidden="true" /> },
+    { name: 'MongoDB', icon: <SiMongodb className="text-green-700 dark:text-green-500" aria-hidden="true" /> },
+    { name: 'JavaScript', icon: <SiJavascript className="text-yellow-500 dark:text-yellow-400" aria-hidden="true" /> },
+    { name: 'Tailwind CSS', icon: <SiTailwindcss className="text-sky-500 dark:text-sky-400" aria-hidden="true" /> },
     {
-        name: 'Git & GitHub', icon: (
-            <div className="flex gap-1">
-                <FaGitAlt className="text-orange-400" />
-                <FaGithub className="text-white" />
+        name: 'Git & GitHub',
+        icon: (
+            <div className="flex items-center gap-1" aria-hidden="true">
+                <FaGitAlt className="text-orange-500 dark:text-orange-400" />
+                <FaGithub className="text-gray-900 dark:text-white" />
             </div>
-        )
+        ),
     },
 ];
 
@@ -36,26 +36,32 @@ export default function Skills() {
     return (
         <section
             id="skills"
-            className="min-h-screen py-20 px-6 bg-[#0f172a] text-white"
+            className="min-h-screen py-20 px-6 bg-white dark:bg-slate-900 text-gray-900 dark:text-white transition-colors"
         >
             <div className="max-w-6xl mx-auto text-center">
+                {/* Section Title */}
                 <motion.h2
-                    className="text-4xl font-bold text-cyan-400 mb-12"
+                    className="text-4xl font-bold text-cyan-600 dark:text-cyan-400 mb-12"
                     initial={{ opacity: 0, y: 30 }}
                     whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
                     transition={{ duration: 0.6 }}
                 >
                     My Skills
                 </motion.h2>
 
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-8">
-                    {skills.map((skill, index) => (
+                {/* Skills Grid */}
+                <div role="list" className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-8">
+                    {SKILLS.map((skill, idx) => (
                         <motion.div
-                            key={index}
-                            className="bg-[#1e293b] p-6 rounded-xl shadow-md hover:shadow-cyan-600/40 hover:scale-105 transition-all flex flex-col items-center justify-center"
+                            key={skill.name}
+                            role="listitem"
+                            className="bg-gray-100 dark:bg-slate-800 p-6 rounded-xl shadow-md hover:shadow-lg hover:shadow-cyan-500/40 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-cyan-500 transition-all cursor-pointer flex flex-col items-center"
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
-                            transition={{ delay: index * 0.1, duration: 0.5 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: idx * 0.1, duration: 0.5 }}
+                            tabIndex={0}
                         >
                             <div className="text-4xl mb-3">{skill.icon}</div>
                             <h3 className="text-lg font-medium">{skill.name}</h3>
