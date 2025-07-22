@@ -1,108 +1,110 @@
-import { useState, useEffect } from 'react';
-import { Link as ScrollLink, Events } from 'react-scroll';
+import { useState, useEffect, useCallback } from 'react';
+import { Link as ScrollLink } from 'react-scroll';
 import { motion, AnimatePresence } from 'framer-motion';
 import { HiMenuAlt3, HiX, HiSun, HiMoon } from 'react-icons/hi';
 
-const navItems = [
-    { name: 'Home', to: 'hero' },
-    { name: 'About', to: 'about' },
-    { name: 'Skills', to: 'skills' },
-    { name: 'Projects', to: 'projects' },
-    { name: 'Testimonials', to: 'testimonials' },
-    { name: 'Experience', to: 'experience' },
-    { name: 'Resume', to: 'resume' },
-    { name: 'Contact', to: 'contact' },
+const NAV_ITEMS = [
+    { label: 'Home', id: 'hero' },
+    { label: 'About', id: 'about' },
+    { label: 'Skills', id: 'skills' },
+    { label: 'Projects', id: 'projects' },
+    { label: 'Testimonials', id: 'testimonials' },
+    { label: 'Experience', id: 'experience' },
+    { label: 'Resume', id: 'resume' },
+    { label: 'Contact', id: 'contact' },
 ];
 
 export default function Navbar() {
     const [menuOpen, setMenuOpen] = useState(false);
-    const [darkMode, setDarkMode] = useState(true);
+    const [darkMode, setDarkMode] = useState(false);
     const [activeSection, setActiveSection] = useState('hero');
+    const [mounted, setMounted] = useState(false);
 
-    // ScrollSpy logic
+    // Sync theme on mount to avoid SSR mismatch
     useEffect(() => {
-        Events.scrollEvent.register('begin', () => { });
-        Events.scrollEvent.register('end', () => { });
-
-        const handleScroll = () => {
-            const scrollPos = window.scrollY;
-            const offsets = navItems.map(item => {
-                const el = document.getElementById(item.to);
-                return { id: item.to, offsetTop: el?.offsetTop || 0 };
-            });
-            const current = offsets
-                .reverse()
-                .find(section => scrollPos >= section.offsetTop - 100);
-            setActiveSection(current?.id || 'hero');
-        };
-
-        window.addEventListener('scroll', handleScroll);
-        return () => window.removeEventListener('scroll', handleScroll);
+        const saved = localStorage.getItem('theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const initial = saved ? saved === 'dark' : prefersDark;
+        setDarkMode(initial);
+        document.documentElement.classList.toggle('dark', initial);
+        setMounted(true);
     }, []);
 
-    // Dark Mode toggle
-    useEffect(() => {
-        if (darkMode) {
-            document.documentElement.classList.add('dark');
-        } else {
-            document.documentElement.classList.remove('dark');
-        }
-    }, [darkMode]);
+    // Toggle theme by toggling the .dark class on <html>
+    const toggleTheme = () => {
+        setDarkMode(prev => {
+            const next = !prev;
+            document.documentElement.classList.toggle('dark', next);
+            localStorage.setItem('theme', next ? 'dark' : 'light');
+            return next;
+        });
+    };
 
-    // Prevent background scroll on mobile menu open
+    // ScrollSpy
+    const handleScroll = useCallback(() => {
+        const scrollY = window.scrollY + 120;
+        let current = 'hero';
+        NAV_ITEMS.forEach(item => {
+            const el = document.getElementById(item.id);
+            if (el && el.offsetTop <= scrollY) current = item.id;
+        });
+        setActiveSection(current);
+    }, []);
+
     useEffect(() => {
-        document.body.style.overflow = menuOpen ? 'hidden' : 'auto';
+        window.addEventListener('scroll', handleScroll, { passive: true });
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, [handleScroll]);
+
+    // Prevent background scroll when mobile menu open
+    useEffect(() => {
+        document.body.style.overflow = menuOpen ? 'hidden' : '';
     }, [menuOpen]);
 
+    if (!mounted) return null; // avoid hydration mismatch
+
     return (
-        <nav className="fixed top-0 left-0 right-0 z-50 backdrop-blur-sm bg-white/70 dark:bg-[#0f172a]/80 border-b border-cyan-700 shadow-md transition">
-            <div className="max-w-6xl mx-auto flex justify-between items-center px-4 py-3">
-
+        <nav className="fixed inset-x-0 top-0 z-50 backdrop-blur bg-white/70 dark:bg-slate-900/70 border-b border-cyan-700 shadow transition-colors">
+            <div className="max-w-6xl mx-auto flex items-center justify-between px-4 py-3">
                 {/* Logo */}
-                <div className="flex items-center gap-2">
-                    <img
-                        src="/logo.png"
-                        alt="Logo"
-                        className="h-8 w-8 rounded-full object-cover"
-                    />
-                    <span className="font-bold text-xl text-cyan-500">Abdul Rauf</span>
-                </div>
+                <ScrollLink to="hero" smooth offset={-80} duration={500} className="flex items-center gap-2 cursor-pointer">
+                    <img src="/logo.png" alt="Abdul Rauf Logo" className="h-8 w-8 rounded-full" />
+                    <span className="text-xl font-bold text-cyan-500">Abdul Rauf</span>
+                </ScrollLink>
 
-                {/* Desktop Nav */}
-                <div className="hidden md:flex gap-6 items-center">
-                    {navItems.map(item => (
+                {/* Desktop Menu */}
+                <div className="hidden md:flex items-center gap-6">
+                    {NAV_ITEMS.map(item => (
                         <ScrollLink
-                            key={item.to}
-                            to={item.to}
-                            spy={true}
-                            smooth={true}
-                            offset={-80}
-                            duration={500}
-                            className={`cursor-pointer text-sm font-medium transition-all ${activeSection === item.to
-                                    ? 'text-cyan-500 font-semibold'
-                                    : 'text-gray-800 dark:text-white hover:text-cyan-400'
+                            key={item.id}
+                            to={item.id}
+                            spy smooth offset={-80} duration={500}
+                            className={`cursor-pointer text-sm font-medium transition ${activeSection === item.id
+                                    ? 'text-cyan-500'
+                                    : 'text-gray-800 dark:text-gray-200 hover:text-cyan-400'
                                 }`}
                         >
-                            {item.name}
+                            {item.label}
                         </ScrollLink>
                     ))}
 
-                    {/* Dark Mode Toggle */}
                     <button
-                        aria-label="Toggle Dark Mode"
-                        onClick={() => setDarkMode(!darkMode)}
-                        className="ml-4 text-xl text-gray-800 dark:text-white hover:text-cyan-500 transition"
+                        aria-label="Toggle theme"
+                        onClick={toggleTheme}
+                        className="ml-4 cursor-pointer text-xl text-gray-800 dark:text-gray-200 hover:text-cyan-500 transition"
                     >
                         {darkMode ? <HiSun /> : <HiMoon />}
                     </button>
                 </div>
 
-                {/* Mobile Menu Toggle */}
-                <div className="md:hidden text-2xl text-gray-800 dark:text-white">
-                    <button aria-label="Toggle Menu" onClick={() => setMenuOpen(!menuOpen)}>
-                        {menuOpen ? <HiX /> : <HiMenuAlt3 />}
-                    </button>
-                </div>
+                {/* Mobile Toggle */}
+                <button
+                    aria-label="Toggle menu"
+                    onClick={() => setMenuOpen(open => !open)}
+                    className="md:hidden cursor-pointer text-2xl text-gray-800 dark:text-gray-200"
+                >
+                    {menuOpen ? <HiX /> : <HiMenuAlt3 />}
+                </button>
             </div>
 
             {/* Mobile Menu */}
@@ -112,33 +114,29 @@ export default function Navbar() {
                         initial={{ opacity: 0, y: -10 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -20 }}
-                        transition={{ duration: 0.3 }}
-                        className="absolute top-full left-0 right-0 w-full bg-white dark:bg-[#0f172a] z-50"
+                        transition={{ duration: 0.2 }}
+                        className="md:hidden bg-white dark:bg-slate-900 border-t border-cyan-700"
                     >
-                        <div className="px-4 pb-4 flex flex-col gap-3 max-w-full">
-                            {navItems.map(item => (
+                        <div className="flex flex-col gap-4 p-4">
+                            {NAV_ITEMS.map(item => (
                                 <ScrollLink
-                                    key={item.to}
-                                    to={item.to}
-                                    spy={true}
-                                    smooth={true}
-                                    offset={-70}
-                                    duration={500}
+                                    key={item.id}
+                                    to={item.id}
+                                    spy smooth offset={-70} duration={500}
                                     onClick={() => setMenuOpen(false)}
-                                    className={`cursor-pointer text-base font-medium ${activeSection === item.to
+                                    className={`cursor-pointer text-base font-medium transition ${activeSection === item.id
                                             ? 'text-cyan-500'
-                                            : 'text-gray-800 dark:text-white hover:text-cyan-400'
+                                            : 'text-gray-800 dark:text-gray-200 hover:text-cyan-400'
                                         }`}
                                 >
-                                    {item.name}
+                                    {item.label}
                                 </ScrollLink>
                             ))}
 
-                            {/* Mobile Dark Mode Toggle */}
                             <button
-                                aria-label="Toggle Dark Mode"
-                                onClick={() => setDarkMode(!darkMode)}
-                                className="mt-3 text-left text-xl text-gray-800 dark:text-white hover:text-cyan-500 transition"
+                                aria-label="Toggle theme"
+                                onClick={toggleTheme}
+                                className="mt-2 cursor-pointer text-left text-xl text-gray-800 dark:text-gray-200 hover:text-cyan-500 transition"
                             >
                                 {darkMode ? '🌞 Light Mode' : '🌙 Dark Mode'}
                             </button>
