@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { FaPaperPlane } from 'react-icons/fa';
 
@@ -18,15 +18,11 @@ export default function Contact() {
         setStatus({ submitting: true, success: '', error: '' });
 
         try {
-            const res = await fetch(
-                `${API_BASE}/contact`,
-                {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(formData),
-                }
-            );
-
+            const res = await fetch(`${API_BASE}/contact`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData),
+            });
             if (!res.ok) throw new Error('Network response was not ok');
 
             setStatus({ submitting: false, success: 'Your message has been sent!', error: '' });
@@ -35,6 +31,26 @@ export default function Contact() {
             setStatus({ submitting: false, success: '', error: 'Something went wrong. Please try again.' });
         }
     };
+
+    // Clear success message after 3s
+    useEffect(() => {
+        if (status.success) {
+            const timer = setTimeout(() => {
+                setStatus((s) => ({ ...s, success: '' }));
+            }, 3000);
+            return () => clearTimeout(timer);
+        }
+    }, [status.success]);
+
+    // Clear error message after 3s
+    useEffect(() => {
+        if (status.error) {
+            const timer = setTimeout(() => {
+                setStatus((s) => ({ ...s, error: '' }));
+            }, 3000);
+            return () => clearTimeout(timer);
+        }
+    }, [status.error]);
 
     return (
         <section
