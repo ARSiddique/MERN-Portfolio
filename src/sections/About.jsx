@@ -1,72 +1,116 @@
-import { motion } from 'framer-motion';
-import { Link as ScrollLink } from 'react-scroll';
-import aboutImg from '../assets/mern-developer-illustration.png';
+// src/sections/About.jsx
+import { motion } from "framer-motion";
+import { Link as ScrollLink } from "react-scroll";
+import {
+  HiLocationMarker,
+  HiLightningBolt,
+  HiCode,
+  HiSparkles,
+} from "react-icons/hi";
+import aboutImg from "../assets/mern-developer-illustration.png";
 
 export default function About() {
-    return (
-        <section
-            id="about"
-            className="min-h-screen py-20 px-6 bg-white dark:bg-slate-900 text-gray-900 dark:text-white transition-colors"
+  return (
+    <section
+      id="about"
+      className="relative min-h-screen py-20 px-6 bg-transparent transition-colors"
+    >
+      <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-12 items-center">
+        {/* Left: Image (premium card) */}
+        <motion.div
+          className="w-full"
+          initial={{ opacity: 0, scale: 0.96, y: 12 }}
+          whileInView={{ opacity: 1, scale: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.35 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
         >
-            <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-12 items-center">
-
-                {/* Left: Image */}
-                <motion.div
-                    className="w-full"
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.6 }}
-                >
-                    <img
-                        src={aboutImg}
-                        alt="Illustration of Abdul Rauf coding"
-                        className="w-full h-auto rounded-lg shadow-lg object-cover"
-                        loading="lazy"
-                    />
-                </motion.div>
-
-                {/* Right: Text */}
-                <motion.div
-                    className="space-y-6"
-                    initial={{ opacity: 0, x: 50 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.7 }}
-                >
-                    <h2 className="text-4xl font-bold text-cyan-600 dark:text-cyan-400">
-                        About Me
-                    </h2>
-
-                    <p className="text-base md:text-lg leading-relaxed">
-                        Hi, I'm <span className="font-semibold text-cyan-600 dark:text-cyan-400">Abdul Rauf</span>, a passionate MERN Stack Developer based in Lahore, Pakistan. I specialize in building fast, secure, and scalable web applications using
-                        <span className="text-cyan-600 dark:text-cyan-400 font-semibold"> MongoDB</span>,
-                        <span className="text-cyan-600 dark:text-cyan-400 font-semibold"> Express.js</span>,
-                        <span className="text-cyan-600 dark:text-cyan-400 font-semibold"> React.js</span>, and
-                        <span className="text-cyan-600 dark:text-cyan-400 font-semibold"> Node.js</span>.
-                    </p>
-
-                    <p className="text-base md:text-lg leading-relaxed">
-                        I thrive on transforming ideas into real-world, user-friendly digital products. With hands-on experience in API development, RESTful architecture, and modern UI/UX design, I ensure every project is optimized for performance and engagement.
-                    </p>
-
-                    <p className="text-base md:text-lg leading-relaxed">
-                        I'm always learning and enjoy tackling creative, meaningful challenges. Whether working solo or collaborating with teams, I bring dedication, energy, and adaptability to each project.
-                    </p>
-
-                    <ScrollLink
-                        to="contact"
-                        smooth
-                        duration={500}
-                        offset={-70}
-                        className="inline-block bg-cyan-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-cyan-700 focus:outline-none focus:ring-2 focus:ring-cyan-500 transition cursor-pointer"
-                        aria-label="Connect with Abdul Rauf"
-                    >
-                        Let’s Connect
-                    </ScrollLink>
-                </motion.div>
-
+          <div className="relative rounded-2xl border border-black/10 dark:border-white/10 bg-white/60 dark:bg-white/5 backdrop-blur-xl shadow-xl overflow-hidden">
+            <div className="absolute inset-0 pointer-events-none bg-gradient-to-br from-cyan-500/12 via-transparent to-blue-500/12" />
+            <div className="p-4">
+              <img
+                src={aboutImg}
+                alt="Illustration of Abdul Rauf coding"
+                className="w-full h-auto rounded-xl object-cover"
+                loading="lazy"
+              />
             </div>
-        </section>
-    );
+          </div>
+        </motion.div>
+
+        {/* Right: Text */}
+        <motion.div
+          className="space-y-6"
+          initial={{ opacity: 0, x: 30 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true, amount: 0.35 }}
+          transition={{ duration: 0.65, ease: "easeOut" }}
+        >
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-cyan-500/25 bg-cyan-400/10 text-cyan-700 dark:text-cyan-200 text-xs font-semibold tracking-wide uppercase">
+            <HiSparkles className="text-sm" />
+            About
+          </div>
+
+          <h2 className="text-4xl md:text-5xl font-extrabold leading-tight">
+            About{" "}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-500 to-blue-500">
+              Me
+            </span>
+          </h2>
+
+          <p className="text-base md:text-lg leading-relaxed text-slate-700 dark:text-slate-200">
+            Hi, I'm{" "}
+            <span className="font-semibold text-cyan-700 dark:text-cyan-300">
+              Abdul Rauf
+            </span>
+            , a passionate MERN Stack Developer based in Lahore, Pakistan. I build fast,
+            secure, and scalable web applications using{" "}
+            <span className="font-semibold text-slate-900 dark:text-white">
+              MongoDB, Express.js, React.js, and Node.js
+            </span>
+            .
+          </p>
+
+          <p className="text-base md:text-lg leading-relaxed text-slate-700 dark:text-slate-200">
+            I enjoy transforming ideas into real-world, user-friendly products. With hands-on
+            experience in API development, RESTful architecture, and modern UI/UX design, I
+            focus on performance and smooth user experience.
+          </p>
+
+          <p className="text-base md:text-lg leading-relaxed text-slate-700 dark:text-slate-200">
+            I’m always learning and love tackling meaningful challenges — whether working solo
+            or collaborating with teams.
+          </p>
+
+          <div className="flex flex-wrap gap-2 pt-1">
+            <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium border border-black/10 dark:border-white/10 bg-white/60 dark:bg-white/5 text-slate-700 dark:text-slate-200">
+              <HiLocationMarker className="text-base text-cyan-600 dark:text-cyan-300" />
+              Lahore, Pakistan
+            </span>
+            <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium border border-black/10 dark:border-white/10 bg-white/60 dark:bg-white/5 text-slate-700 dark:text-slate-200">
+              <HiCode className="text-base text-cyan-600 dark:text-cyan-300" />
+              MERN + Next.js
+            </span>
+            <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium border border-black/10 dark:border-white/10 bg-white/60 dark:bg-white/5 text-slate-700 dark:text-slate-200">
+              <HiLightningBolt className="text-base text-cyan-600 dark:text-cyan-300" />
+              UI/UX + APIs
+            </span>
+          </div>
+
+          <ScrollLink
+            to="contact"
+            smooth
+            duration={500}
+            offset={-90}
+            className="group inline-flex items-center gap-2 bg-cyan-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-cyan-700 focus:outline-none focus:ring-2 focus:ring-cyan-500 transition cursor-pointer shadow-[0_10px_30px_rgba(8,145,178,0.22)]"
+            aria-label="Connect with Abdul Rauf"
+          >
+            Let’s Connect
+            <span className="inline-block transition-transform group-hover:translate-x-0.5">
+              →
+            </span>
+          </ScrollLink>
+        </motion.div>
+      </div>
+    </section>
+  );
 }
