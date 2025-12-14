@@ -1,16 +1,16 @@
 @import "tailwindcss";
+
 @custom-variant dark (&:where(.dark, .dark *));
 
-/* ✅ Background should match theme in BOTH modes */
-html, body {
+html,
+body {
   overflow-x: hidden;
-  overscroll-behavior-y: none; /* ✅ reduces rubber-band effect in Chrome */
 }
 
-/* Light mode */
-html { background: #ffffff; }
-body { background: #ffffff; }
-
-/* Dark mode */
-.dark html { background: #0f172a; } /* slate-900 */
-.dark body { background: #0f172a; }
+/* ✅ overscroll white flash avoid */
+body {
+  background: white;
+}
+.dark body {
+  background: rgb(2 6 23); /* slate-950 */
+}

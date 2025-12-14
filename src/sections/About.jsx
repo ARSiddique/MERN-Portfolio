@@ -1,22 +1,14 @@
-// src/sections/About.jsx
 import { motion } from "framer-motion";
 import { Link as ScrollLink } from "react-scroll";
-import {
-  HiLocationMarker,
-  HiLightningBolt,
-  HiCode,
-  HiSparkles,
-} from "react-icons/hi";
+import { HiLocationMarker, HiLightningBolt, HiCode, HiSparkles } from "react-icons/hi";
 import aboutImg from "../assets/mern-developer-illustration.png";
 
 export default function About() {
   return (
-    <section
-      id="about"
-      className="relative min-h-screen py-20 px-6 bg-transparent transition-colors"
-    >
-      <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-12 items-center">
-        {/* Left: Image (premium card) */}
+    <section id="about" className="relative min-h-screen py-20 px-6 overflow-hidden">
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-cyan-400/20 to-transparent" />
+
+      <div className="relative max-w-6xl mx-auto grid md:grid-cols-2 gap-12 items-center">
         <motion.div
           className="w-full"
           initial={{ opacity: 0, scale: 0.96, y: 12 }}
@@ -37,7 +29,6 @@ export default function About() {
           </div>
         </motion.div>
 
-        {/* Right: Text */}
         <motion.div
           className="space-y-6"
           initial={{ opacity: 0, x: 30 }}
@@ -45,7 +36,7 @@ export default function About() {
           viewport={{ once: true, amount: 0.35 }}
           transition={{ duration: 0.65, ease: "easeOut" }}
         >
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-cyan-500/25 bg-cyan-400/10 text-cyan-700 dark:text-cyan-200 text-xs font-semibold tracking-wide uppercase">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-cyan-500/25 bg-white/60 dark:bg-white/5 backdrop-blur text-cyan-700 dark:text-cyan-200 text-xs font-semibold tracking-wide uppercase">
             <HiSparkles className="text-sm" />
             About
           </div>
@@ -62,8 +53,8 @@ export default function About() {
             <span className="font-semibold text-cyan-700 dark:text-cyan-300">
               Abdul Rauf
             </span>
-            , a passionate MERN Stack Developer based in Lahore, Pakistan. I build fast,
-            secure, and scalable web applications using{" "}
+            , a MERN Stack Developer based in Lahore, Pakistan. I build fast, secure,
+            scalable web applications using{" "}
             <span className="font-semibold text-slate-900 dark:text-white">
               MongoDB, Express.js, React.js, and Node.js
             </span>
@@ -71,26 +62,24 @@ export default function About() {
           </p>
 
           <p className="text-base md:text-lg leading-relaxed text-slate-700 dark:text-slate-200">
-            I enjoy transforming ideas into real-world, user-friendly products. With hands-on
-            experience in API development, RESTful architecture, and modern UI/UX design, I
-            focus on performance and smooth user experience.
+            I enjoy transforming ideas into real-world, user-friendly products with clean UI,
+            smooth UX, and production-ready structure.
           </p>
 
           <p className="text-base md:text-lg leading-relaxed text-slate-700 dark:text-slate-200">
-            I’m always learning and love tackling meaningful challenges — whether working solo
-            or collaborating with teams.
+            Always learning, always improving — solo or in teams, I deliver with consistency.
           </p>
 
           <div className="flex flex-wrap gap-2 pt-1">
-            <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium border border-black/10 dark:border-white/10 bg-white/60 dark:bg-white/5 text-slate-700 dark:text-slate-200">
+            <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium border border-black/10 dark:border-white/10 bg-white/60 dark:bg-white/5 backdrop-blur text-slate-700 dark:text-slate-200">
               <HiLocationMarker className="text-base text-cyan-600 dark:text-cyan-300" />
               Lahore, Pakistan
             </span>
-            <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium border border-black/10 dark:border-white/10 bg-white/60 dark:bg-white/5 text-slate-700 dark:text-slate-200">
+            <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium border border-black/10 dark:border-white/10 bg-white/60 dark:bg-white/5 backdrop-blur text-slate-700 dark:text-slate-200">
               <HiCode className="text-base text-cyan-600 dark:text-cyan-300" />
               MERN + Next.js
             </span>
-            <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium border border-black/10 dark:border-white/10 bg-white/60 dark:bg-white/5 text-slate-700 dark:text-slate-200">
+            <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium border border-black/10 dark:border-white/10 bg-white/60 dark:bg-white/5 backdrop-blur text-slate-700 dark:text-slate-200">
               <HiLightningBolt className="text-base text-cyan-600 dark:text-cyan-300" />
               UI/UX + APIs
             </span>
@@ -105,9 +94,7 @@ export default function About() {
             aria-label="Connect with Abdul Rauf"
           >
             Let’s Connect
-            <span className="inline-block transition-transform group-hover:translate-x-0.5">
-              →
-            </span>
+            <span className="inline-block transition-transform group-hover:translate-x-0.5">→</span>
           </ScrollLink>
         </motion.div>
       </div>

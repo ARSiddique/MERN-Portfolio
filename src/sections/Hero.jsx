@@ -1,4 +1,3 @@
-// src/sections/Hero.jsx
 import { motion } from "framer-motion";
 import { Link as ScrollLink } from "react-scroll";
 import { FaLaptopCode, FaEnvelopeOpenText } from "react-icons/fa";
@@ -6,11 +5,12 @@ import { HiSparkles } from "react-icons/hi";
 
 export default function Hero() {
   return (
-    <section
-      id="hero"
-      className="relative min-h-screen pt-24 px-6 bg-transparent transition-colors"
-    >
-      <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-12">
+    <section id="hero" className="relative min-h-screen pt-24 px-6 overflow-hidden">
+      {/* soft separator glow only (no full bg) */}
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-cyan-400/35 to-transparent" />
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-cyan-400/20 to-transparent" />
+
+      <div className="relative max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-12">
         {/* Left */}
         <motion.div
           className="flex-1 text-center md:text-left"
@@ -18,8 +18,7 @@ export default function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, ease: "easeOut" }}
         >
-          {/* badge */}
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-cyan-500/25 bg-cyan-400/10 text-cyan-700 dark:text-cyan-200 text-xs font-semibold tracking-wide uppercase">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-cyan-500/25 bg-white/60 dark:bg-white/5 backdrop-blur text-cyan-700 dark:text-cyan-200 text-xs font-semibold tracking-wide uppercase">
             <HiSparkles className="text-sm" />
             MERN Stack Developer
           </div>
@@ -44,21 +43,17 @@ export default function Hero() {
             with a strong focus on UI/UX and clean architecture.
           </p>
 
-          {/* proof chips */}
           <div className="mt-6 flex flex-wrap items-center justify-center md:justify-start gap-2">
-            {["Role-based Auth (JWT)", "Admin Dashboards", "REST APIs", "Responsive UI"].map(
-              (t) => (
-                <span
-                  key={t}
-                  className="px-3 py-1 rounded-full text-xs font-medium border border-black/10 dark:border-white/10 bg-white/60 dark:bg-white/5 text-slate-700 dark:text-slate-200"
-                >
-                  {t}
-                </span>
-              )
-            )}
+            {["Role-based Auth (JWT)", "Admin Dashboards", "REST APIs", "Responsive UI"].map((t) => (
+              <span
+                key={t}
+                className="px-3 py-1 rounded-full text-xs font-medium border border-black/10 dark:border-white/10 bg-white/60 dark:bg-white/5 text-slate-700 dark:text-slate-200 backdrop-blur"
+              >
+                {t}
+              </span>
+            ))}
           </div>
 
-          {/* CTA */}
           <div className="mt-8 flex flex-col sm:flex-row justify-center md:justify-start gap-3">
             <ScrollLink
               to="projects"
@@ -80,8 +75,8 @@ export default function Hero() {
               smooth
               duration={500}
               offset={-90}
-              className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-semibold border border-cyan-600/60 text-cyan-700 dark:text-cyan-300 hover:bg-cyan-600 hover:text-white focus:outline-none focus:ring-2 focus:ring-cyan-500 transition cursor-pointer bg-white/60 dark:bg-white/5"
-              aria-label="Hire Me"
+              className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-semibold border border-cyan-600/60 text-cyan-700 dark:text-cyan-300 hover:bg-cyan-600 hover:text-white focus:outline-none focus:ring-2 focus:ring-cyan-500 transition cursor-pointer bg-white/60 dark:bg-white/5 backdrop-blur"
+              aria-label="Let’s Talk"
             >
               <FaEnvelopeOpenText className="text-lg" aria-hidden="true" />
               Let’s Talk

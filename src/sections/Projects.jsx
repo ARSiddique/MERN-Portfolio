@@ -1,260 +1,228 @@
+import { useCallback, useRef, useState } from "react";
+import { motion } from "framer-motion";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Pagination } from "swiper/modules";
+import { Pagination, A11y } from "swiper/modules";
+import { FiArrowRight } from "react-icons/fi";
+import { HiSparkles } from "react-icons/hi";
+
 import "swiper/css";
-import "swiper/css/navigation";
 import "swiper/css/pagination";
 
-import { motion } from "framer-motion";
-import { FiExternalLink } from "react-icons/fi";
-import { FaGithub } from "react-icons/fa";
+function cx(...a) {
+  return a.filter(Boolean).join(" ");
+}
 
-const PROJECTS = [
-  {
-    title: "Supreme IT Experts",
-    description:
-      "Managed IT Services & Cybersecurity website built with a premium, conversion-focused layout and modern UI.",
-    image: "/project-supreme.jpg", // ✅ add this image in /public or change path
-    link: "https://supremeitexperts.com/",
-    github: "",
-    tags: ["IT Services", "SEO Ready", "Modern UI"],
-  },
-  {
-    title: "Diamond Star Printing Works",
-    description:
-      "Printing business website showcasing offset & digital printing services with clear service structure.",
-    image: "/project-diamond.jpg", // ✅ add this image in /public or change path
-    link: "https://diamondstarprintingworks.com/",
-    github: "",
-    tags: ["WordPress", "Business Site", "Services"],
-  },
-  {
-    title: "The Lost Tribe",
-    description:
-      "High-end 3D styled restaurant concept site with cinematic visuals and modern section transitions.",
-    image: "/project-lost-tribe.jpg", // ✅ add this image in /public or change path
-    link: "https://the-lost-tribe.vercel.app/",
-    github: "",
-    tags: ["Next.js", "3D Style", "Premium UI"],
-  },
+function usePingPongSwiperNav() {
+  const swiperRef = useRef(null);
+  const [dir, setDir] = useState("next");
+  const [show, setShow] = useState(true);
 
-  // ✅ Existing sample projects (keep or remove)
-  {
-    title: "Online Quran Academy",
-    description:
-      "A full-stack role-based LMS with login, dashboards, student-teacher roles, and admin panel using MERN + Tailwind.",
-    image: "/project1.jpg",
-    link: "https://your-oqa-live-link.com",
-    github: "https://github.com/yourusername/oqa",
-    tags: ["MERN", "Auth", "Dashboard"],
-  },
-  {
-    title: "Car Rental Web App",
-    description:
-      "Modern car rental app with secure backend, admin dashboard and JWT auth flow using MERN.",
-    image: "/project2.jpg",
-    link: "https://your-car-rental.com",
-    github: "https://github.com/yourusername/car-rental",
-    tags: ["MERN", "JWT", "Admin Panel"],
-  },
-  {
-    title: "Portfolio Website",
-    description:
-      "Responsive portfolio with animations using React, Tailwind, Framer Motion, Lottie and smooth section navigation.",
-    image: "/project3.jpg",
-    link: null,
-    github: "https://github.com/yourusername/portfolio",
-    tags: ["React", "Animations", "UI/UX"],
-  },
-];
+  const getStats = (sw) => {
+    const total = sw?.slides?.length ?? 0;
+    const spvRaw =
+      typeof sw?.slidesPerViewDynamic === "function"
+        ? sw.slidesPerViewDynamic()
+        : Number(sw?.params?.slidesPerView) || 1;
 
-const container = {
-  hidden: { opacity: 0, y: 18 },
-  show: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.6, ease: "easeOut" },
-  },
-};
+    const spv = Math.max(1, Math.ceil(spvRaw));
+    const hasOverflow = total > spv;
+
+    const atStart = (sw?.activeIndex ?? 0) <= 0;
+    const atEnd = (sw?.activeIndex ?? 0) >= total - spv;
+
+    return { total, spv, hasOverflow, atStart, atEnd };
+  };
+
+  const sync = useCallback((sw) => {
+    if (!sw) return;
+    const { hasOverflow, atStart, atEnd } = getStats(sw);
+
+    setShow(hasOverflow);
+
+    setDir((prev) => {
+      if (!hasOverflow) return "next";
+      if (prev === "next" && atEnd) return "prev";
+      if (prev === "prev" && atStart) return "next";
+      return prev;
+    });
+  }, []);
+
+  const onSwiper = useCallback(
+    (sw) => {
+      swiperRef.current = sw;
+      sync(sw);
+
+      sw.on("slideChange", () => sync(sw));
+      sw.on("resize", () => sync(sw));
+      sw.on("breakpoint", () => sync(sw));
+      sw.on("slidesLengthChange", () => sync(sw));
+    },
+    [sync]
+  );
+
+  const onArrowClick = useCallback(() => {
+    const sw = swiperRef.current;
+    if (!sw) return;
+    if (dir === "next") sw.slideNext();
+    else sw.slidePrev();
+  }, [dir]);
+
+  return { dir, show, onSwiper, onArrowClick };
+}
 
 export default function Projects() {
+  const projects = [
+    {
+      title: "Supreme IT Experts",
+      desc:
+        "Managed IT services & cybersecurity website with modern UI, fast performance, and conversion-focused layout.",
+      tags: ["Next.js", "Tailwind", "SEO"],
+      liveUrl: "https://supremeitexperts.com/",
+    },
+    {
+      title: "Diamond Star Printing Works",
+      desc:
+        "Printing business website showcasing offset & digital services with clear service structure and lead-friendly content.",
+      tags: ["WordPress", "Business Site", "Services"],
+      liveUrl: "#",
+    },
+    {
+      title: "The Lost Tribe",
+      desc:
+        "High-end 3D styled restaurant concept site with cinematic visuals and premium section transitions.",
+      tags: ["Next.js", "3D Style", "Premium UI"],
+      liveUrl: "#",
+    },
+    {
+      title: "MERN Portfolio",
+      desc: "Portfolio with smooth sections, modern animations, and scalable component structure.",
+      tags: ["React", "Tailwind", "Framer Motion"],
+      liveUrl: "#",
+    },
+  ];
+
+  const { dir, show, onSwiper, onArrowClick } = usePingPongSwiperNav();
+
   return (
-    <section id="projects" className="relative min-h-screen py-20 px-6 bg-transparent">
-      <div className="max-w-6xl mx-auto text-center">
-        {/* Header */}
+    <section id="projects" className="relative min-h-screen py-20 px-6">
+      <div className="max-w-6xl mx-auto">
         <motion.div
-          variants={container}
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true, amount: 0.35 }}
+          className="text-center"
+          initial={{ opacity: 0, y: 14 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.25 }}
+          transition={{ duration: 0.55 }}
         >
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-cyan-500/25 bg-cyan-400/10 text-cyan-700 dark:text-cyan-200 text-xs font-semibold tracking-wide uppercase">
-            🚀 Projects
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-cyan-500/25 bg-white/70 dark:bg-white/5 backdrop-blur text-cyan-700 dark:text-cyan-200 text-xs font-semibold tracking-wide uppercase">
+            <HiSparkles className="text-sm" />
+            Projects
           </div>
 
-          <h2 className="mt-4 text-4xl md:text-5xl font-extrabold leading-tight">
+          <h2 className="mt-4 text-4xl md:text-5xl font-extrabold">
             Featured{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-500 to-blue-500">
               Work
             </span>
           </h2>
 
-          <p className="mt-3 text-sm md:text-base text-slate-600 dark:text-slate-300 max-w-2xl mx-auto">
-            Some of my recent projects — clean UI, smooth UX, scalable structure, and production-ready layouts.
+          <p className="mt-3 text-slate-600 dark:text-slate-300 max-w-2xl mx-auto">
+            Some of my recent projects — clean UI, smooth UX, scalable structure,
+            and production-ready layouts.
           </p>
         </motion.div>
 
-        {/* Swiper */}
-        <div className="mt-10">
+        <div className="relative mt-12">
+          {/* ✅ Bottom-right arrow (no overlap on mobile) */}
+          {show ? (
+            <button
+              type="button"
+              onClick={onArrowClick}
+              aria-label={dir === "next" ? "Next projects" : "Previous projects"}
+              className={cx(
+                "absolute z-20",
+                "right-3 bottom-6 sm:right-6 sm:bottom-7",
+                "h-12 w-12 rounded-full",
+                "border border-black/10 dark:border-white/10",
+                "bg-white/80 dark:bg-white/5 backdrop-blur",
+                "shadow-lg",
+                "flex items-center justify-center",
+                "focus:outline-none focus:ring-2 focus:ring-cyan-500"
+              )}
+            >
+              <motion.span
+                className="inline-flex"
+                animate={{ x: dir === "next" ? [0, 6, 0] : [0, -6, 0] }}
+                transition={{ duration: 0.9, repeat: Infinity, ease: "easeInOut" }}
+              >
+                <FiArrowRight
+                  className={cx(
+                    "text-2xl text-cyan-700 dark:text-cyan-200",
+                    dir === "prev" ? "rotate-180" : ""
+                  )}
+                />
+              </motion.span>
+            </button>
+          ) : null}
+
           <Swiper
-            modules={[Navigation, Pagination]}
-            navigation
+            modules={[Pagination, A11y]}
+            onSwiper={onSwiper}
+            grabCursor
+            touchAngle={70}
+            threshold={10}
+            resistanceRatio={0.65}
+            touchStartPreventDefault={false}
             pagination={{ clickable: true }}
             spaceBetween={18}
-            slidesPerView={1}
             breakpoints={{
-              768: { slidesPerView: 2, spaceBetween: 18 },
-              1024: { slidesPerView: 3, spaceBetween: 20 },
+              0: { slidesPerView: 1 },
+              768: { slidesPerView: 2 },
+              1024: { slidesPerView: 3 },
             }}
-            className="projects-swiper pb-10"
+            className="pb-12"
           >
-            {PROJECTS.map((project, idx) => {
-              const hasGithub = Boolean(project.github && project.github.trim().length > 0);
-              const hasLive = Boolean(project.link && project.link.trim().length > 0);
+            {projects.map((p) => (
+              <SwiperSlide key={p.title} className="h-auto">
+                <div className="h-full rounded-3xl border border-black/10 dark:border-white/10 bg-white/70 dark:bg-white/5 backdrop-blur-xl shadow-xl overflow-hidden">
+                  <div className="p-6">
+                    <div className="rounded-2xl h-40 border border-black/5 dark:border-white/10 bg-gradient-to-br from-cyan-500/10 via-transparent to-blue-500/10" />
 
-              return (
-                <SwiperSlide key={project.title}>
-                  <motion.div
-                    initial={{ opacity: 0, y: 18, scale: 0.98 }}
-                    whileInView={{ opacity: 1, y: 0, scale: 1 }}
-                    viewport={{ once: true, amount: 0.3 }}
-                    transition={{ delay: Math.min(idx * 0.06, 0.25), duration: 0.55, ease: "easeOut" }}
-                    className="group h-full"
-                  >
-                    {/* gradient border wrapper */}
-                    <div className="relative h-full rounded-2xl p-[1px] bg-gradient-to-br from-cyan-500/30 via-transparent to-blue-500/30">
-                      {/* glass card */}
-                      <div className="relative h-full rounded-2xl overflow-hidden border border-black/10 dark:border-white/10 bg-white/60 dark:bg-white/5 backdrop-blur-xl shadow-lg transition group-hover:-translate-y-1 group-hover:shadow-[0_22px_70px_rgba(8,145,178,0.18)]">
-                        {/* image */}
-                        <div className="relative">
-                          <img
-                            src={project.image}
-                            alt={project.title}
-                            className="w-full h-48 object-cover"
-                            loading="lazy"
-                          />
-                          <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
-                        </div>
+                    <h3 className="mt-5 text-xl font-bold text-slate-900 dark:text-white">
+                      {p.title}
+                    </h3>
 
-                        {/* content */}
-                        <div className="p-6 flex flex-col h-full">
-                          <h3 className="text-xl font-bold text-slate-900 dark:text-white">
-                            {project.title}
-                          </h3>
+                    <p className="mt-2 text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+                      {p.desc}
+                    </p>
 
-                          <p className="mt-2 text-sm text-slate-600 dark:text-slate-300 flex-grow leading-relaxed">
-                            {project.description}
-                          </p>
-
-                          {/* tags */}
-                          {project.tags?.length ? (
-                            <div className="mt-4 flex flex-wrap gap-2">
-                              {project.tags.map((t) => (
-                                <span
-                                  key={t}
-                                  className="px-3 py-1 rounded-full text-[11px] font-medium border border-black/10 dark:border-white/10 bg-white/60 dark:bg-white/5 text-slate-700 dark:text-slate-200"
-                                >
-                                  {t}
-                                </span>
-                              ))}
-                            </div>
-                          ) : null}
-
-                          {/* buttons */}
-                          <div className="mt-5 flex items-center justify-center gap-3">
-                            {hasLive && (
-                              <a
-                                href={project.link}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl font-semibold text-sm bg-cyan-600 text-white hover:bg-cyan-700 transition shadow-[0_10px_30px_rgba(8,145,178,0.22)]"
-                                aria-label={`View live demo of ${project.title}`}
-                              >
-                                Live <FiExternalLink aria-hidden="true" />
-                              </a>
-                            )}
-
-                            {hasGithub && (
-                              <a
-                                href={project.github}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl font-semibold text-sm border border-black/15 dark:border-white/15 bg-white/60 dark:bg-white/5 text-slate-900 dark:text-white hover:bg-slate-900 hover:text-white dark:hover:bg-white/10 transition"
-                                aria-label={`View GitHub repo of ${project.title}`}
-                              >
-                                Code <FaGithub aria-hidden="true" />
-                              </a>
-                            )}
-                          </div>
-
-                          {/* hover glow */}
-                          <div className="pointer-events-none absolute -inset-8 opacity-0 blur-2xl transition group-hover:opacity-100 bg-cyan-400/10 dark:bg-cyan-400/10" />
-                        </div>
-                      </div>
+                    <div className="mt-4 flex flex-wrap gap-2">
+                      {p.tags.map((t) => (
+                        <span
+                          key={t}
+                          className="text-xs px-3 py-1 rounded-full border border-black/10 dark:border-white/10 bg-white/70 dark:bg-white/5 text-slate-700 dark:text-slate-200"
+                        >
+                          {t}
+                        </span>
+                      ))}
                     </div>
-                  </motion.div>
-                </SwiperSlide>
-              );
-            })}
+
+                    <div className="mt-5">
+                      <a
+                        href={p.liveUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl font-semibold bg-cyan-600 hover:bg-cyan-700 text-white shadow-[0_12px_30px_rgba(8,145,178,0.22)] transition focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                      >
+                        Live <span aria-hidden="true">↗</span>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </SwiperSlide>
+            ))}
           </Swiper>
         </div>
       </div>
-
-      {/* Swiper styling (scoped via class) */}
-      <style>
-        {`
-          .projects-swiper :global(.swiper-button-prev),
-          .projects-swiper :global(.swiper-button-next){
-            width: 42px;
-            height: 42px;
-            border-radius: 999px;
-            backdrop-filter: blur(10px);
-            background: rgba(255,255,255,0.6);
-            border: 1px solid rgba(0,0,0,0.08);
-            box-shadow: 0 14px 40px rgba(0,0,0,0.12);
-          }
-          .projects-swiper :global(.swiper-button-prev:after),
-          .projects-swiper :global(.swiper-button-next:after){
-            font-size: 16px;
-            font-weight: 800;
-            color: #0f172a;
-          }
-          :global(.dark) .projects-swiper :global(.swiper-button-prev),
-          :global(.dark) .projects-swiper :global(.swiper-button-next){
-            background: rgba(255,255,255,0.06);
-            border: 1px solid rgba(255,255,255,0.10);
-          }
-          :global(.dark) .projects-swiper :global(.swiper-button-prev:after),
-          :global(.dark) .projects-swiper :global(.swiper-button-next:after){
-            color: rgba(255,255,255,0.9);
-          }
-
-          .projects-swiper :global(.swiper-pagination-bullet){
-            width: 9px;
-            height: 9px;
-            background: rgba(15, 23, 42, 0.25);
-            opacity: 1;
-          }
-          .projects-swiper :global(.swiper-pagination-bullet-active){
-            background: rgba(8,145,178,0.9);
-          }
-          :global(.dark) .projects-swiper :global(.swiper-pagination-bullet){
-            background: rgba(255,255,255,0.18);
-          }
-          :global(.dark) .projects-swiper :global(.swiper-pagination-bullet-active){
-            background: rgba(34,211,238,0.85);
-          }
-        `}
-      </style>
     </section>
   );
 }
