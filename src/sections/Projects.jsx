@@ -70,6 +70,35 @@ function usePingPongSwiperNav() {
   return { dir, show, onSwiper, onArrowClick };
 }
 
+function ProjectThumb({ src, alt }) {
+  const [ok, setOk] = useState(true);
+
+  return (
+    <div className="relative rounded-2xl h-40 overflow-hidden border border-black/5 dark:border-white/10 bg-gradient-to-br from-cyan-500/10 via-white/5 to-blue-500/10">
+      {/* soft glow layers */}
+      <div className="absolute inset-0 opacity-30 bg-[radial-gradient(circle_at_30%_30%,rgba(34,211,238,0.30),transparent_55%)]" />
+      <div className="absolute inset-0 opacity-25 bg-[radial-gradient(circle_at_70%_70%,rgba(59,130,246,0.30),transparent_55%)]" />
+
+      <div className="relative h-full w-full flex items-center justify-center p-6">
+        {src && ok ? (
+          <img
+            src={src}
+            alt={alt}
+            loading="lazy"
+            onError={() => setOk(false)}
+            className="max-h-full max-w-full object-contain"
+            style={{ imageRendering: "auto" }}
+          />
+        ) : (
+          <div className="text-xs text-slate-500 dark:text-slate-400">
+            Preview Image
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
 export default function Projects() {
   const projects = [
     {
@@ -78,6 +107,7 @@ export default function Projects() {
         "Managed IT services & cybersecurity website with modern UI, fast performance, and conversion-focused layout.",
       tags: ["Next.js", "Tailwind", "SEO"],
       liveUrl: "https://supremeitexperts.com/",
+      logo: "/projects/supreme.webp",
     },
     {
       title: "Diamond Star Printing Works",
@@ -85,6 +115,7 @@ export default function Projects() {
         "Printing business website showcasing offset & digital services with clear service structure and lead-friendly content.",
       tags: ["WordPress", "Business Site", "Services"],
       liveUrl: "#",
+      logo: "/projects/diamond.png",
     },
     {
       title: "The Lost Tribe",
@@ -92,12 +123,15 @@ export default function Projects() {
         "High-end 3D styled restaurant concept site with cinematic visuals and premium section transitions.",
       tags: ["Next.js", "3D Style", "Premium UI"],
       liveUrl: "#",
+      logo: "/projects/lost-tribe.png",
     },
     {
       title: "MERN Portfolio",
-      desc: "Portfolio with smooth sections, modern animations, and scalable component structure.",
+      desc:
+        "Portfolio with smooth sections, modern animations, and scalable component structure.",
       tags: ["React", "Tailwind", "Framer Motion"],
       liveUrl: "#",
+      logo: "/projects/mern.png",
     },
   ];
 
@@ -132,7 +166,7 @@ export default function Projects() {
         </motion.div>
 
         <div className="relative mt-12">
-          {/* ✅ Bottom-right arrow (no overlap on mobile) */}
+          {/* Arrow button moved OUT of card overlap area */}
           {show ? (
             <button
               type="button"
@@ -140,7 +174,8 @@ export default function Projects() {
               aria-label={dir === "next" ? "Next projects" : "Previous projects"}
               className={cx(
                 "absolute z-20",
-                "right-3 bottom-6 sm:right-6 sm:bottom-7",
+                "right-3 bottom-0 sm:right-6",
+                "translate-y-1/2",
                 "h-12 w-12 rounded-full",
                 "border border-black/10 dark:border-white/10",
                 "bg-white/80 dark:bg-white/5 backdrop-blur",
@@ -179,47 +214,65 @@ export default function Projects() {
               768: { slidesPerView: 2 },
               1024: { slidesPerView: 3 },
             }}
-            className="pb-12"
+            className="pb-16"
           >
-            {projects.map((p) => (
-              <SwiperSlide key={p.title} className="h-auto">
-                <div className="h-full rounded-3xl border border-black/10 dark:border-white/10 bg-white/70 dark:bg-white/5 backdrop-blur-xl shadow-xl overflow-hidden">
-                  <div className="p-6">
-                    <div className="rounded-2xl h-40 border border-black/5 dark:border-white/10 bg-gradient-to-br from-cyan-500/10 via-transparent to-blue-500/10" />
+            {projects.map((p) => {
+              const hasLive = p.liveUrl && p.liveUrl !== "#";
 
-                    <h3 className="mt-5 text-xl font-bold text-slate-900 dark:text-white">
-                      {p.title}
-                    </h3>
+              return (
+                <SwiperSlide key={p.title} className="h-auto">
+                  <motion.div
+                    whileHover={{ y: -4 }}
+                    transition={{ duration: 0.25 }}
+                    className="h-full rounded-3xl border border-black/10 dark:border-white/10 bg-white/70 dark:bg-white/5 backdrop-blur-xl shadow-xl overflow-hidden"
+                  >
+                    <div className="p-6">
+                      <ProjectThumb src={p.logo} alt={`${p.title} logo`} />
 
-                    <p className="mt-2 text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
-                      {p.desc}
-                    </p>
+                      <h3 className="mt-5 text-xl font-bold text-slate-900 dark:text-white">
+                        {p.title}
+                      </h3>
 
-                    <div className="mt-4 flex flex-wrap gap-2">
-                      {p.tags.map((t) => (
-                        <span
-                          key={t}
-                          className="text-xs px-3 py-1 rounded-full border border-black/10 dark:border-white/10 bg-white/70 dark:bg-white/5 text-slate-700 dark:text-slate-200"
-                        >
-                          {t}
-                        </span>
-                      ))}
+                      <p className="mt-2 text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+                        {p.desc}
+                      </p>
+
+                      <div className="mt-4 flex flex-wrap gap-2">
+                        {p.tags.map((t) => (
+                          <span
+                            key={t}
+                            className="text-xs px-3 py-1 rounded-full border border-black/10 dark:border-white/10 bg-white/70 dark:bg-white/5 text-slate-700 dark:text-slate-200"
+                          >
+                            {t}
+                          </span>
+                        ))}
+                      </div>
+
+                      <div className="mt-5">
+                        {hasLive ? (
+                          <a
+                            href={p.liveUrl}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl font-semibold bg-cyan-600 hover:bg-cyan-700 text-white shadow-[0_12px_30px_rgba(8,145,178,0.22)] transition focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                          >
+                            Live <span aria-hidden="true">↗</span>
+                          </a>
+                        ) : (
+                          <button
+                            type="button"
+                            disabled
+                            className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl font-semibold bg-slate-400/20 text-slate-200 cursor-not-allowed border border-white/10"
+                          >
+                            Live Soon
+                          </button>
+                        )}
+                      </div>
                     </div>
-
-                    <div className="mt-5">
-                      <a
-                        href={p.liveUrl}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl font-semibold bg-cyan-600 hover:bg-cyan-700 text-white shadow-[0_12px_30px_rgba(8,145,178,0.22)] transition focus:outline-none focus:ring-2 focus:ring-cyan-500"
-                      >
-                        Live <span aria-hidden="true">↗</span>
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </SwiperSlide>
-            ))}
+                  </motion.div>
+                </SwiperSlide>
+              );
+            })}
           </Swiper>
         </div>
       </div>
