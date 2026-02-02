@@ -1,0 +1,16 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+html,
+body {
+  overflow-x: hidden;
+}
+
+/* ✅ overscroll white flash avoid */
+body {
+  background: white;
+}
+.dark body {
+  background: rgb(2 6 23); /* slate-950 */
+}
